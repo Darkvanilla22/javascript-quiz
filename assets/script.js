@@ -1,13 +1,15 @@
-var quizContainer = document.getElementById('quiz-container');
-var startContainer = document.getElementById('start-container');
-var endContainer = document.getElementById('end-container');
-var questionElement = document.getElementById('question');
-var optionsElement = document.getElementById('options');
-var feedbackElement = document.getElementById('feedback');
-var timerElement = document.getElementById('timer');
-var timeElement = document.getElementById('time');
-var initialsInput = document.getElementById('initials');
-var finalScoreElement = document.getElementById('final-score');
+var elements = {
+    quizContainer: document.getElementById('quiz-container'),
+    startContainer: document.getElementById('start-container'),
+    endContainer: document.getElementById('end-container'),
+    questionElement: document.getElementById('question'),
+    optionsElement: document.getElementById('options'),
+    feedbackElement: document.getElementById('feedback'),
+    timerElement: document.getElementById('timer'),
+    timeElement: document.getElementById('time'),
+    initialsInput: document.getElementById('initials'),
+    finalScoreElement: document.getElementById('final-score'),
+  };
 
 var questions = [
     {
@@ -60,5 +62,55 @@ var questions = [
       options: ["DOM API", "Fetch API", "Canvas API", "Date API"],
       correctAnswer: "Date API"
     }
-  ];
+];
+  
+
+  
+function initializeQuizVariables() {
+    return {
+      currentQuestionIndex: 0,
+      timer: null,
+      timeLeft: 60
+    };
+}
+  
+let quizVariables = initializeQuizVariables();
+  
+function startQuiz() {
+    elements.startContainer.style.display = 'none';
+    elements.quizContainer.style.display = 'block';
+    loadQuestion();
+    quizVariables.timer = setInterval(updateTimer, 1000);
+}
+  
+function loadQuestion() {
+    var { question, options } = questions[quizVariables.currentQuestionIndex];
+    elements.questionElement.textContent = question;
+    elements.optionsElement.innerHTML = options.map(option => `<button onclick="checkAnswer('${option}')">${option}</button>`).join('');
+}
+  
+function checkAnswer(answer) {
+    var { correctAnswer } = questions[quizVariables.currentQuestionIndex];
+    elements.feedbackElement.textContent = answer === correctAnswer ? 'Correct!' : 'Incorrect!';
+    if (answer !== correctAnswer) quizVariables.timeLeft = Math.max(0, quizVariables.timeLeft - 10);
+    quizVariables.currentQuestionIndex++;
+    quizVariables.currentQuestionIndex < questions.length ? loadQuestion() : endQuiz();
+}
+  
+function updateTimer() {
+    elements.timeElement.textContent = quizVariables.timeLeft;
+    quizVariables.timeLeft <= 0 ? endQuiz() : quizVariables.timeLeft--;
+}
+  
+function endQuiz() {
+    clearInterval(quizVariables.timer);
+    elements.quizContainer.style.display = 'none';
+    elements.endContainer.style.display = 'block';
+    elements.finalScoreElement.textContent = quizVariables.timeLeft;
+}
+  
+function saveScore() {
+    var initials = elements.initialsInput.value;
+    alert(`Score saved for ${initials}: ${quizVariables.timeLeft}`);
+}
   
