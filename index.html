@@ -4,15 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Code Quiz</title>
-  <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+  <!-- Link to the external CSS stylesheet -->
+  <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
 
+  <!-- Start container with the quiz title and start button -->
   <div id="start-container">
     <h1>Code Quiz</h1>
     <button onclick="startQuiz()">Start Quiz</button>
   </div>
 
+  <!-- Quiz container with question, options, feedback, and timer -->
   <div id="quiz-container">
     <h2 id="question"></h2>
     <div id="options"></div>
@@ -20,6 +23,7 @@
     <p id="timer">Time: <span id="time">0</span></p>
   </div>
 
+  <!-- End container with game over message, final score, and input for initials -->
   <div id="end-container" style="display:none;">
     <h2>Game Over!</h2>
     <p>Your score: <span id="final-score"></span></p>
@@ -28,6 +32,7 @@
     <button onclick="saveScore()">Save Score</button>
   </div>
 
-  <script src="assets/script.js"></script>
+  <!-- Include the JavaScript file at the end for better page load performance -->
+  <script src="script.js"></script>
 </body>
 </html>
