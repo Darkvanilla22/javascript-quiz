@@ -1,0 +1,31 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+  }
+  
+  #quiz-container {
+    display: none;
+  }
+  
+  #start-container, #end-container {
+    margin-top: 20px;
+  }
+  
+  button {
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  #options button {
+    margin: 5px;
+  }
+  
+  #end-container input {
+    margin: 10px;
+  }
+  
+  #end-container button {
+    margin-top: 10px;
+  }
+  
