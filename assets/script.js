@@ -62,3 +62,47 @@ var questions = [
     }
   ];
   
+let currentQuestionIndex = 0,
+    timer,
+    timeLeft = 60;
+
+function startQuiz() {
+  elements.startContainer.style.display = 'none';
+  elements.quizContainer.style.display = 'block';
+  loadQuestion();
+  timer = setInterval(updateTimer, 1000);
+}
+
+function loadQuestion() {
+  const { question, options } = questions[currentQuestionIndex];
+  elements.questionElement.textContent = question;
+  elements.optionsElement.innerHTML = options.map(option => {
+    const button = `<button onclick="checkAnswer('${option}')">${option}</button>`;
+    return button;
+  }).join('');
+}
+
+function checkAnswer(answer) {
+  const { correctAnswer } = questions[currentQuestionIndex];
+  elements.feedbackElement.textContent = answer === correctAnswer ? 'Correct!' : 'Incorrect!';
+  if (answer !== correctAnswer) timeLeft = Math.max(0, timeLeft - 10);
+  currentQuestionIndex++;
+  currentQuestionIndex < questions.length ? loadQuestion() : endQuiz();
+}
+
+function updateTimer() {
+  elements.timeElement.textContent = timeLeft;
+  timeLeft <= 0 ? endQuiz() : timeLeft--;
+}
+
+function endQuiz() {
+  clearInterval(timer);
+  elements.quizContainer.style.display = 'none';
+  elements.endContainer.style.display = 'block';
+  elements.finalScoreElement.textContent = timeLeft;
+}
+
+function saveScore() {
+  const initials = elements.initialsInput.value;
+  alert(`Score saved for ${initials}: ${timeLeft}`);
+}
