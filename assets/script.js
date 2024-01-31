@@ -1,3 +1,4 @@
+// DOM elements used in the quiz
 var elements = {
     quizContainer: document.getElementById('quiz-container'),
     startContainer: document.getElementById('start-container'),
@@ -9,8 +10,9 @@ var elements = {
     timeElement: document.getElementById('time'),
     initialsInput: document.getElementById('initials'),
     finalScoreElement: document.getElementById('final-score'),
-  };
+};
 
+// Array of quiz questions related to Web APIs
 var questions = [
     {
       question: "What does API stand for?",
@@ -64,8 +66,7 @@ var questions = [
     }
 ];
   
-
-  
+// Function to initialize quiz variables
 function initializeQuizVariables() {
     return {
       currentQuestionIndex: 0,
@@ -74,34 +75,40 @@ function initializeQuizVariables() {
     };
 }
   
+// Initialize quiz variables
 let quizVariables = initializeQuizVariables();
-  
+ 
+// Function to start the quiz
 function startQuiz() {
     elements.startContainer.style.display = 'none';
     elements.quizContainer.style.display = 'block';
     loadQuestion();
     quizVariables.timer = setInterval(updateTimer, 1000);
 }
-  
+
+// Function to load a question
 function loadQuestion() {
-    var { question, options } = questions[quizVariables.currentQuestionIndex];
+    const { question, options } = questions[quizVariables.currentQuestionIndex];
     elements.questionElement.textContent = question;
     elements.optionsElement.innerHTML = options.map(option => `<button onclick="checkAnswer('${option}')">${option}</button>`).join('');
 }
   
+// Function to check the answer
 function checkAnswer(answer) {
-    var { correctAnswer } = questions[quizVariables.currentQuestionIndex];
+    const { correctAnswer } = questions[quizVariables.currentQuestionIndex];
     elements.feedbackElement.textContent = answer === correctAnswer ? 'Correct!' : 'Incorrect!';
     if (answer !== correctAnswer) quizVariables.timeLeft = Math.max(0, quizVariables.timeLeft - 10);
     quizVariables.currentQuestionIndex++;
     quizVariables.currentQuestionIndex < questions.length ? loadQuestion() : endQuiz();
 }
   
+// Function to update the timer
 function updateTimer() {
     elements.timeElement.textContent = quizVariables.timeLeft;
     quizVariables.timeLeft <= 0 ? endQuiz() : quizVariables.timeLeft--;
 }
   
+// Function to end the quiz
 function endQuiz() {
     clearInterval(quizVariables.timer);
     elements.quizContainer.style.display = 'none';
@@ -109,8 +116,9 @@ function endQuiz() {
     elements.finalScoreElement.textContent = quizVariables.timeLeft;
 }
   
+// Function to save the score
 function saveScore() {
-    var initials = elements.initialsInput.value;
+    const initials = elements.initialsInput.value;
     alert(`Score saved for ${initials}: ${quizVariables.timeLeft}`);
+    // Save initials and score as needed
 }
-  
