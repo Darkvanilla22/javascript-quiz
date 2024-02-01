@@ -71,7 +71,7 @@ function initializeQuizVariables() {
     return {
       currentQuestionIndex: 0,
       timer: null,
-      timeLeft: 60
+      timeLeft: 100
     };
 }
   
