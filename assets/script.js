@@ -78,10 +78,11 @@ function initializeQuizVariables() {
 // Initialize quiz variables
 let quizVariables = initializeQuizVariables();
  
-// Function to start the quiz
+// Function to start the quiz or restart it
 function startQuiz() {
     elements.startContainer.style.display = 'none';
     elements.quizContainer.style.display = 'block';
+    quizVariables = initializeQuizVariables(); // Reset quiz variables
     loadQuestion();
     quizVariables.timer = setInterval(updateTimer, 1000);
 }
@@ -117,8 +118,26 @@ function endQuiz() {
 }
   
 // Function to save the score
-function saveScore() {
-    const initials = elements.initialsInput.value;
-    alert(`Score saved for ${initials}: ${quizVariables.timeLeft}`);
-    // Save initials and score as needed
+function endQuiz() {
+    clearInterval(quizVariables.timer);
+    elements.quizContainer.style.display = 'none';
+    elements.endContainer.style.display = 'block';
+    elements.finalScoreElement.textContent = quizVariables.timeLeft;
+    elements.feedbackElement.textContent = ''; // Clear the feedback element
+  
+    // Check if "Start Over" button already exists
+    const existingStartOverButton = document.getElementById('start-over-button');
+  
+    if (!existingStartOverButton) {
+      // If not, create and add "Start Over" button
+      var startOverButton = document.createElement('button');
+      startOverButton.textContent = 'Start Over';
+      startOverButton.id = 'start-over-button';
+      startOverButton.onclick = () => {
+        elements.endContainer.style.display = 'none'; // Hide end container
+        elements.feedbackElement.textContent = ''; // Clear the feedback element
+        startQuiz(); // Restart the quiz
+      };
+      elements.endContainer.appendChild(startOverButton);
+    }
 }
