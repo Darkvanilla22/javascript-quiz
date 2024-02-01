@@ -1,6 +1,8 @@
 body {
     font-family: Arial, sans-serif;
     text-align: center;
+    background-color: #1f1f1f; /* Dark background color */
+    color: #ffffff; /* Text color */
   }
   
   #quiz-container {
@@ -15,6 +17,14 @@ body {
     padding: 10px;
     font-size: 16px;
     cursor: pointer;
+    background-color: #800080; /* Purple button color */
+    color: #ffffff; /* Button text color */
+    border: none;
+    border-radius: 5px;
+  }
+  
+  button:hover {
+    background-color: #4b0082; /* Darker purple on hover */
   }
   
   #options button {
@@ -23,9 +33,10 @@ body {
   
   #end-container input {
     margin: 10px;
+    padding: 8px;
+    font-size: 14px;
   }
   
   #end-container button {
     margin-top: 10px;
-  }
-  
+  }  
