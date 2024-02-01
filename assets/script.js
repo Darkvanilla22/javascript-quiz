@@ -12,6 +12,9 @@ var elements = {
     finalScoreElement: document.getElementById('final-score'),
 };
 
+// Array to store saved scores
+var savedScores = [];
+
 // Array of quiz questions related to Web APIs
 var questions = [
     {
@@ -89,14 +92,14 @@ function startQuiz() {
 
 // Function to load a question
 function loadQuestion() {
-    const { question, options } = questions[quizVariables.currentQuestionIndex];
+    var { question, options } = questions[quizVariables.currentQuestionIndex];
     elements.questionElement.textContent = question;
     elements.optionsElement.innerHTML = options.map(option => `<button onclick="checkAnswer('${option}')">${option}</button>`).join('');
 }
   
 // Function to check the answer
 function checkAnswer(answer) {
-    const { correctAnswer } = questions[quizVariables.currentQuestionIndex];
+    var { correctAnswer } = questions[quizVariables.currentQuestionIndex];
     elements.feedbackElement.textContent = answer === correctAnswer ? 'Correct!' : 'Incorrect!';
     if (answer !== correctAnswer) quizVariables.timeLeft = Math.max(0, quizVariables.timeLeft - 10);
     quizVariables.currentQuestionIndex++;
@@ -115,18 +118,26 @@ function endQuiz() {
     elements.quizContainer.style.display = 'none';
     elements.endContainer.style.display = 'block';
     elements.finalScoreElement.textContent = quizVariables.timeLeft;
-}
-  
-// Function to save the score
-function endQuiz() {
-    clearInterval(quizVariables.timer);
-    elements.quizContainer.style.display = 'none';
-    elements.endContainer.style.display = 'block';
-    elements.finalScoreElement.textContent = quizVariables.timeLeft;
     elements.feedbackElement.textContent = ''; // Clear the feedback element
   
+    // Add "Save Score" button to save the score
+    var saveScoreButton = document.createElement('button');
+    saveScoreButton.textContent = 'Save Score';
+    saveScoreButton.onclick = () => {
+      var initials = elements.initialsInput.value;
+      var score = quizVariables.timeLeft;
+  
+      if (initials && !isNaN(score)) {
+        savedScores.push({ initials, score }); // Save the score
+        updateSavedScores(); // Update the displayed scores
+      } else {
+        alert('Please enter initials before saving the score.');
+      }
+    };
+    elements.endContainer.appendChild(saveScoreButton);
+  
     // Check if "Start Over" button already exists
-    const existingStartOverButton = document.getElementById('start-over-button');
+    var existingStartOverButton = document.getElementById('start-over-button');
   
     if (!existingStartOverButton) {
       // If not, create and add "Start Over" button
@@ -140,4 +151,27 @@ function endQuiz() {
       };
       elements.endContainer.appendChild(startOverButton);
     }
+
+    // Remove duplicate "Save Score" buttons
+  const saveScoreButtons = document.querySelectorAll('#end-container button');
+  saveScoreButtons.forEach(button => {
+    if (button.textContent === 'Save Score' && button !== saveScoreButton) {
+      button.remove();
+    }
+  });
+
+  // Update the displayed scores
+  updateSavedScores();
+}
+  
+// Function to update the displayed scores
+function updateSavedScores() {
+    var scoresContainer = document.getElementById('saved-scores');
+    scoresContainer.innerHTML = ''; // Clear existing scores
+  
+    savedScores.forEach((score, index) => {
+      var scoreItem = document.createElement('li');
+      scoreItem.textContent = `#${index + 1}: ${score.initials} - ${score.score}`;
+      scoresContainer.appendChild(scoreItem);
+    });
 }

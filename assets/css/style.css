@@ -40,3 +40,13 @@ body {
   #end-container button {
     margin-top: 10px;
   }  
+
+#saved-scores {
+    list-style: none; /* Remove bullet points */
+    padding: 0;
+    margin: 0;
+}
+  
+#saved-scores li {
+    margin-bottom: 5px;
+}
